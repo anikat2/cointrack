@@ -24,7 +24,6 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 
 function App() {
-  // Authentication states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [signUpUser, setSignUpUser] = useState('');
@@ -33,7 +32,6 @@ function App() {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Transaction states
   const [currentBalance, setCurrentBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [expenseAmount, setExpenseAmount] = useState('');
@@ -45,10 +43,8 @@ function App() {
   const calculateSpendingPatterns = () => {
     const expensesByCategory = {};
     
-    // Get only expenses
     const expenses = transactions.filter(t => t.type === 'expense');
     
-    // Group expenses by description (category)
     expenses.forEach(expense => {
       const category = expense.description || 'Uncategorized';
       if (!expensesByCategory[category]) {
@@ -57,13 +53,11 @@ function App() {
       expensesByCategory[category] += parseFloat(expense.amount);
     });
 
-    // Convert to array format for Recharts
     const patternsData = Object.entries(expensesByCategory).map(([category, amount]) => ({
       category,
       amount: parseFloat(amount.toFixed(2))
     }));
 
-    // Sort by amount in descending order
     patternsData.sort((a, b) => b.amount - a.amount);
     
     setSpendingPatterns(patternsData);
@@ -92,7 +86,6 @@ function App() {
       });
 
       alert("Sign-up successful! Please log in.");
-      // Reset signup form
       setSignUpUser('');
       setSignUpPass('');
       setSignUpConfirm('');
